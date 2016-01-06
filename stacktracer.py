@@ -4,10 +4,10 @@ Usage:
 
 import stacktracer
 
-stacktracer.start_trace("trace.html", interval=5, auto=True)
+stacktracer.trace_start("trace.html", interval=5, auto=True)
 # Set auto flag to always update file!
 ....
-stacktracer.stop_trace()
+stacktracer.trace_stop()
 """
 import os
 import sys
@@ -15,9 +15,12 @@ import time
 import threading
 import traceback
 
-from pygments import highlight
-from pygments.lexers import PythonLexer
-from pygments.formatters import HtmlFormatter
+try:
+    from pygments import highlight
+    from pygments.lexers import PythonLexer
+    from pygments.formatters import HtmlFormatter
+except ImportError:
+    pass
 
 # Taken from http://bzimmer.ziclix.com/2008/12/17/python-thread-dumps/
 
@@ -31,11 +34,14 @@ def stacktraces():
             if line:
                 code.append("  %s" % (line.strip()))
 
-    return highlight("\n".join(code), PythonLexer(), HtmlFormatter(
-        full=False,
-        # style="native",
-        noclasses=True,
-    ))
+    if "PythonLexer" in dir():
+        return highlight("\n".join(code), PythonLexer(), HtmlFormatter(
+            full=False,
+            # style="native",
+            noclasses=True,
+        ))
+    else:
+        return "\n".join(code)
 
 
 class TraceDumper(threading.Thread):
