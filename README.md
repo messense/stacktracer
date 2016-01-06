@@ -14,10 +14,10 @@ pip install stacktracer
 ```python
 import stacktracer
 
-stacktracer.start_trace("trace.html", interval=5, auto=True)
+stacktracer.trace_start("trace.html", interval=5, auto=True)
 # Set auto flag to always update file!
 
 // Do something with multi-threading here
 
-stacktracer.stop_trace()
+stacktracer.trace_stop()
 ```
