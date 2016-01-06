@@ -35,13 +35,13 @@ def stacktraces():
                 code.append("  %s" % (line.strip()))
 
     if "PythonLexer" in dir():
-      return highlight("\n".join(code), PythonLexer(), HtmlFormatter(
-          full=False,
-          # style="native",
-          noclasses=True,
-      ))
+        return highlight("\n".join(code), PythonLexer(), HtmlFormatter(
+            full=False,
+            # style="native",
+            noclasses=True,
+        ))
     else:
-      return "\n".join(code)
+        return "\n".join(code)
 
 
 class TraceDumper(threading.Thread):
