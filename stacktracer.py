@@ -26,9 +26,13 @@ except ImportError:
 
 
 def stacktraces():
+    idToName = {}
+    for thread in threading.enumerate():
+        idToName[thread.ident] = thread.name
+
     code = []
     for threadId, stack in sys._current_frames().items():
-        code.append("\n# ThreadID: %s" % threadId)
+        code.append("\n# Thread %s, ID %d" % (idToName[threadId], threadId))
         for filename, lineno, name, line in traceback.extract_stack(stack):
             code.append('File: "%s", line %d, in %s' % (filename, lineno, name))
             if line:
@@ -61,7 +65,7 @@ class TraceDumper(threading.Thread):
         self.interval = interval
         self.fpath = os.path.abspath(fpath)
         self.stop_requested = threading.Event()
-        threading.Thread.__init__(self)
+        threading.Thread.__init__(self, name="stackTracer")
 
     def run(self):
         while not self.stop_requested.isSet():
