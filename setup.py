@@ -11,7 +11,7 @@ with open(readme) as f:
 
 setup(
     name='stacktracer',
-    version='0.1.1',
+    version='0.1.2',
     author='messense',
     author_email='messense@icloud.com',
     url='https://github.com/messense/stacktracer',
